@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Jeu Pur CSS - Tape la cible !</title>
+    <style>
+        /* 1. Configuration du compteur de score */
+        body {
+            counter-reset: score; /* Initialise le compteur "score" */
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f0f0f0;
+        }
+
+        /* 2. Affichage du score */
+        .score-display::after {
+            content: counter(score); /* Affiche la valeur du compteur */
+            font-weight: bold;
+            color: #d35400;
+        }
+
+        /* 3. La zone de jeu */
+        .game-area {
+            position: relative;
+            width: 400px;
+            height: 400px;
+            margin: 20px auto;
+            border: 4px solid #333;
+            background: #fff;
+            overflow: hidden;
+        }
+
+        /* 4. Les cibles (Checkboxes masquées) */
+        input[type="checkbox"] {
+            position: absolute;
+            appearance: none;
+            width: 50px;
+            height: 50px;
+            background-color: #e74c3c;
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 2;
+            /* Animation de mouvement aléatoire */
+            animation: move 4s infinite alternate;
+        }
+
+        /* Incrémente le score quand on clique (coche) une cible */
+        input[type="checkbox"]:checked {
+            counter-increment: score;
+            display: none; /* La cible disparaît une fois touchée */
+        }
+
+        /* 5. Animation des cibles */
+        @keyframes move {
+            0% { top: 10%; left: 10%; }
+            25% { top: 70%; left: 20%; }
+            50% { top: 20%; left: 80%; }
+            75% { top: 80%; left: 60%; }
+            100% { top: 40%; left: 40%; }
+        }
+
+        /* Différents délais pour chaque cible pour varier le rythme */
+        .target-2 { animation-delay: -1s !important; background-color: #3498db !important; }
+        .target-3 { animation-delay: -2s !important; background-color: #2ecc71 !important; }
+    </style>
+</head>
+<body>
+
+    <h1>Mini-Jeu Pur CSS</h1>
+    <p>Clique sur les cercles colorés avant qu'ils ne bougent !</p>
+    
+    <div class="score-display">Votre Score : </div>
+
+    <div class="game-area">
+        <!-- Chaque checkbox est une cible -->
+        <input type="checkbox" class="target-1">
+        <input type="checkbox" class="target-2">
+        <input type="checkbox" class="target-3">
+        <input type="checkbox" class="target-4">
+    </div>
+
+    <p><button onclick="location.reload()">Recommencer</button></p>
+
+</body>
+</html>
