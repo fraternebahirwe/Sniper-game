@@ -2,22 +2,23 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Jeu Pur CSS - Tape la cible !</title>
+    <title>CSS GAME TARGET</title>
     <style>
         /* 1. Configuration du compteur de score */
         body {
             counter-reset: score; /* Initialise le compteur "score" */
             font-family: Arial, sans-serif;
             text-align: center;
-            background-color: #f0f0f0;
+            background-color: #746c6c;
         }
 
         /* 2. Affichage du score */
         .score-display::after {
             content: counter(score); /* Affiche la valeur du compteur */
             font-weight: bold;
-            color: #d35400;
+            color: #ffffff;
         }
+        
 
         /* 3. La zone de jeu */
         .game-area {
@@ -31,7 +32,7 @@
         }
 
         #game-title {
-            color: #2980b9;
+            color: #2048f9;
         }
 
         /* 4. Les cibles (Checkboxes masquées) */
@@ -40,12 +41,12 @@
             appearance: none;
             width: 50px;
             height: 50px;
-            background-color: #e74c3c;
+            background-color: #ff1900;
             border-radius: 50%;
             cursor: pointer;
             z-index: 2;
             /* Animation de mouvement aléatoire */
-            animation: move 4s infinite alternate;
+            animation: move 5s infinite alternate;
         }
 
         /* Incrémente le score quand on clique (coche) une cible */
@@ -70,10 +71,10 @@
 </head>
 <body>
 
-    <h1 id="game-title">Mini-Jeu Pur CSS</h1>
-    <p>Clique sur les cercles colorés avant qu'ils ne bougent !</p>
+    <h1 id="game-title">Mini-Game Sniper</h1>
+    <p>Click on circles colored before moving !</p>
     
-    <div class="score-display">Votre Score : </div>
+    <div class="score-display">Your Score : </div>
 
     <div class="game-area">
         <!-- Chaque checkbox est une cible -->
@@ -83,7 +84,7 @@
         <input type="checkbox" class="target-4">
     </div>
 
-    <p><button onclick="location.reload()">Recommencer</button></p>
+    <p><button onclick="location.reload()">Start</button></p>
 
 </body>
 </html>
