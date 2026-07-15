@@ -1,0 +1,17 @@
+
+/* Initialize the counter */
+body {
+    counter-reset: score;
+}
+
+/* Increment the counter on click */
+input[type="checkbox"]:checked {
+    counter-increment: score;
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* Dynamically display the score */
+.score-display::after {
+    content: " " counter(score);
+}
