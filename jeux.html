@@ -15,25 +15,34 @@
             color: #ffffff;
             margin: 0;
             padding: 20px;
+            
+            /* Active Flexbox pour réorganiser visuellement les éléments */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
         #game-title {
+            order: 1; /* Reste en 1ère position */
             color: #3498db;
+            margin-top: 0;
             margin-bottom: 5px;
             text-transform: uppercase;
             letter-spacing: 2px;
         }
 
         .instructions {
+            order: 2; /* Reste en 2e position */
             color: #aaa;
             font-size: 0.9rem;
-            margin-bottom: 20px;
+            margin-bottom: 10px;
         }
 
         /* 2. Affichage du score */
         .score-display {
+            order: 3; /* Affiché en 3e position (au-dessus du jeu) */
             font-size: 1.5rem;
-            margin-bottom: 15px;
+            margin-bottom: 5px;
         }
         
         .score-display::after {
@@ -42,8 +51,33 @@
             color: #2ecc71;
         }
 
-        /* 3. La zone de jeu */
+        /* 3. Minuteur visuel (Progress Bar) */
+        .timer-container {
+            order: 4;
+            width: 400px;
+            height: 10px;
+            background-color: #333;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            overflow: hidden;
+        }
+
+        .timer-bar {
+            height: 100%;
+            background-color: #e74c3c;
+            width: 100%;
+            /* Animation de 5 secondes qui rétrécit la barre */
+            animation: countdown 5s linear forwards;
+        }
+
+        @keyframes countdown {
+            from { width: 100%; background-color: #2ecc71; }
+            to { width: 0%; background-color: #e74c3c; }
+        }
+
+        /* 4. La zone de jeu */
         .game-area {
+            order: 5; /* Affiché en 5e position */
             position: relative;
             width: 400px;
             height: 400px;
@@ -55,7 +89,48 @@
             box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
         }
 
-        /* 4. Les cibles (Checkboxes stylisées en cibles) */
+        /* Écran Game Over qui apparaît pile au bout de 5s */
+        .game-over-screen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.85);
+            z-index: 10; /* Passe au-dessus des cibles pour bloquer les clics */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            
+            /* Cache l'écran au début, puis l'affiche après 5s */
+            opacity: 0;
+            pointer-events: none;
+            animation: showGameOver 0s forwards;
+            animation-delay: 5s; /* Se déclenche exactement à la fin des 5s */
+        }
+
+        .game-over-screen h2 {
+            color: #e74c3c;
+            font-size: 2rem;
+            margin: 0 0 10px 0;
+            text-transform: uppercase;
+        }
+
+        @keyframes showGameOver {
+            to {
+                opacity: 1;
+                pointer-events: auto; /* Active les collisions pour bloquer le jeu */
+            }
+        }
+
+        /* Conteneur du bouton restart */
+        .restart-container {
+            order: 6; /* Affiché tout en bas */
+            margin: 0;
+        }
+
+        /* 5. Les cibles (Checkboxes stylisées en cibles) */
         input[type="checkbox"] {
             position: absolute;
             appearance: none;
@@ -96,33 +171,28 @@
             pointer-events: none; /* Empêche de recliquer dessus */
         }
 
-        /* 5. Mouvements et designs uniques pour chaque cible */
-        
-        /* Cible 1 : Rouge, rapide */
+        /* 6. Mouvements et designs uniques pour chaque cible */
         .target-1 {
             background-color: #e74c3c;
             animation: move1 4s infinite linear alternate;
         }
 
-        /* Cible 2 : Bleue, moyenne */
         .target-2 {
             background-color: #3498db;
             animation: move2 5s infinite linear alternate;
         }
 
-        /* Cible 3 : Verte, lente */
         .target-3 {
             background-color: #2ecc71;
             animation: move3 6s infinite linear alternate;
         }
 
-        /* Cible 4 : Jaune, très rapide */
         .target-4 {
             background-color: #f1c40f;
             animation: move4 3.5s infinite linear alternate;
         }
 
-        /* Animations personnalisées pour éviter les collisions rectilignes */
+        /* Animations de déplacements */
         @keyframes move1 {
             0%   { top: 10%; left: 10%; }
             50%  { top: 80%; left: 30%; }
@@ -147,7 +217,7 @@
             100% { top: 10%; left: 20%; }
         }
 
-        /* 6. Bouton Recommencer */
+        /* 7. Bouton Recommencer */
         button {
             background-color: #3498db;
             color: white;
@@ -172,11 +242,22 @@
 <body>
 
     <h1 id="game-title">Mini-Game Sniper</h1>
-    <p class="instructions">Cliquez sur les cibles mouvantes avant qu'elles ne s'échappent !</p>
+    <p class="instructions">Cliquez sur un maximum de cibles en 5 secondes !</p>
     
     <div class="score-display">Your Score :</div>
 
+    <!-- Barre de chargement du minuteur -->
+    <div class="timer-container">
+        <div class="timer-bar"></div>
+    </div>
+
     <div class="game-area">
+        <!-- Écran Game Over caché, s'affiche automatiquement après 5s -->
+        <div class="game-over-screen">
+            <h2>Game Over</h2>
+            <p>Le temps est écoulé !</p>
+        </div>
+
         <!-- Chaque checkbox est une cible autonome -->
         <input type="checkbox" class="target-1">
         <input type="checkbox" class="target-2">
@@ -184,7 +265,7 @@
         <input type="checkbox" class="target-4">
     </div>
 
-    <p><button onclick="location.reload()">Restart Game</button></p>
+    <p class="restart-container"><button onclick="location.reload()">Start / Restart</button></p>
 
 </body>
 </html>
