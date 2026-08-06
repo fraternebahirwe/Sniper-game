@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>🎯 Sniper Arena</title>
-    <!-- Liaison avec le fichier CSS externe -->
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -12,36 +11,35 @@
     <h1 id="game-title">🎯 Sniper Arena</h1>
     <p class="instructions">Éliminez un maximum de cibles mouvantes !</p>
     
-    <!-- Score interactif du haut -->
-    <div class="score-display">Score :</div>
+    <!-- Zone des Scores (Actuel + Meilleur) -->
+    <div class="hud-container">
+        <div class="score-display">Score : <span id="score-val">0</span></div>
+        <div class="best-display">🏆 Record : <span id="best-val">0</span></div>
+    </div>
 
     <!-- Barre de temps -->
     <div class="timer-container">
-        <div class="timer-bar"></div>
+        <div class="timer-bar" id="timer-bar"></div>
     </div>
 
     <!-- Zone d'action -->
-    <div class="game-area">
+    <div class="game-area" id="game-area">
         
-        <!-- Écran Game Over -->
-        <div class="game-over-screen">
-            <h2>Temps Écoulé !</h2>
-            <p>Fin de la session de tir.</p>
-            <div class="final-score-box">Score Final :</div>
-            <button onclick="location.reload()">🔄 Recommencer</button>
+        <!-- Écran Game Over / Accueil -->
+        <div class="game-overlay" id="game-overlay">
+            <h2 id="overlay-title">Sniper Arena</h2>
+            <p id="overlay-desc">Prêt pour la session de tir ?</p>
+            <div class="final-score-box hidden" id="final-score-box">Score Final : <span id="final-score-val">0</span></div>
+            <button id="action-btn">▶ Commencer</button>
         </div>
 
-        <!-- Les Checkboxes (Cibles réactives) -->
-        <input type="checkbox" class="target-1">
-        <input type="checkbox" class="target-2">
-        <input type="checkbox" class="target-3">
-        <input type="checkbox" class="target-4">
+        <!-- Les Cibles -->
+        <div class="target target-1 hidden"></div>
+        <div class="target target-2 hidden"></div>
+        <div class="target target-3 hidden"></div>
+        <div class="target target-4 hidden"></div>
     </div>
 
-    <!-- Bouton Reset sous l'arène -->
-    <div class="restart-container">
-        <button onclick="location.reload()">Forcer le Reset</button>
-    </div>
-
+    <script src="script.js"></script>
 </body>
 </html>
