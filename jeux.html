@@ -1,271 +1,47 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <link href="style.css" rel="stylesheet">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CSS GAME TARGET</title>
-    <style>
-        /* 1. Configuration globale et compteur de score */
-        body {
-            counter-reset: score; /* Initialise le score global */
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            text-align: center;
-            background-color: #1a1a1a;
-            color: #ffffff;
-            margin: 0;
-            padding: 20px;
-            
-            /* Active Flexbox pour réorganiser visuellement les éléments */
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        #game-title {
-            order: 1; /* Reste en 1ère position */
-            color: #3498db;
-            margin-top: 0;
-            margin-bottom: 5px;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-        }
-
-        .instructions {
-            order: 2; /* Reste en 2e position */
-            color: #aaa;
-            font-size: 0.9rem;
-            margin-bottom: 10px;
-        }
-
-        /* 2. Affichage du score */
-        .score-display {
-            order: 3; /* Affiché en 3e position (au-dessus du jeu) */
-            font-size: 1.5rem;
-            margin-bottom: 5px;
-        }
-        
-        .score-display::after {
-            content: " " counter(score); /* Affiche dynamiquement le score */
-            font-weight: bold;
-            color: #2ecc71;
-        }
-
-        /* 3. Minuteur visuel (Progress Bar) */
-        .timer-container {
-            order: 4;
-            width: 400px;
-            height: 10px;
-            background-color: #333;
-            border-radius: 5px;
-            margin-bottom: 15px;
-            overflow: hidden;
-        }
-
-        .timer-bar {
-            height: 100%;
-            background-color: #e74c3c;
-            width: 100%;
-            /* Animation de 5 secondes qui rétrécit la barre */
-            animation: countdown 5s linear forwards;
-        }
-
-        @keyframes countdown {
-            from { width: 100%; background-color: #2ecc71; }
-            to { width: 0%; background-color: #e74c3c; }
-        }
-
-        /* 4. La zone de jeu */
-        .game-area {
-            order: 5; /* Affiché en 5e position */
-            position: relative;
-            width: 400px;
-            height: 400px;
-            margin: 0 auto 20px auto;
-            border: 4px solid #3498db;
-            border-radius: 8px;
-            background: #111;
-            overflow: hidden;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
-        }
-
-        /* Écran Game Over qui apparaît pile au bout de 5s */
-        .game-over-screen {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.85);
-            z-index: 10; /* Passe au-dessus des cibles pour bloquer les clics */
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            
-            /* Cache l'écran au début, puis l'affiche après 5s */
-            opacity: 0;
-            pointer-events: none;
-            animation: showGameOver 0s forwards;
-            animation-delay: 5s; /* Se déclenche exactement à la fin des 5s */
-        }
-
-        .game-over-screen h2 {
-            color: #e74c3c;
-            font-size: 2rem;
-            margin: 0 0 10px 0;
-            text-transform: uppercase;
-        }
-
-        @keyframes showGameOver {
-            to {
-                opacity: 1;
-                pointer-events: auto; /* Active les collisions pour bloquer le jeu */
-            }
-        }
-
-        /* Conteneur du bouton restart */
-        .restart-container {
-            order: 6; /* Affiché tout en bas */
-            margin: 0;
-        }
-
-        /* 5. Les cibles (Checkboxes stylisées en cibles) */
-        input[type="checkbox"] {
-            position: absolute;
-            appearance: none;
-            -webkit-appearance: none;
-            width: 40px;
-            height: 40px;
-            background-color: #e74c3c;
-            border: 3px solid #ffffff;
-            border-radius: 50%;
-            cursor: crosshair;
-            z-index: 2;
-            outline: none;
-            transition: opacity 0.2s ease, transform 0.1s ease;
-        }
-
-        /* Design de "viseur" au centre de chaque rond */
-        input[type="checkbox"]::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 8px;
-            height: 8px;
-            background-color: #ffffff;
-            border-radius: 50%;
-            transform: translate(-50%, -50%);
-        }
-
-        /* Effet au survol */
-        input[type="checkbox"]:hover {
-            transform: scale(1.1);
-        }
-
-        /* Incrémente le score et fait disparaître proprement la cible */
-        input[type="checkbox"]:checked {
-            counter-increment: score;
-            opacity: 0;
-            pointer-events: none; /* Empêche de recliquer dessus */
-        }
-
-        /* 6. Mouvements et designs uniques pour chaque cible */
-        .target-1 {
-            background-color: #e74c3c;
-            animation: move1 4s infinite linear alternate;
-        }
-
-        .target-2 {
-            background-color: #3498db;
-            animation: move2 5s infinite linear alternate;
-        }
-
-        .target-3 {
-            background-color: #2ecc71;
-            animation: move3 6s infinite linear alternate;
-        }
-
-        .target-4 {
-            background-color: #f1c40f;
-            animation: move4 3.5s infinite linear alternate;
-        }
-
-        /* Animations de déplacements */
-        @keyframes move1 {
-            0%   { top: 10%; left: 10%; }
-            50%  { top: 80%; left: 30%; }
-            100% { top: 30%; left: 80%; }
-        }
-
-        @keyframes move2 {
-            0%   { top: 80%; left: 80%; }
-            50%  { top: 20%; left: 50%; }
-            100% { top: 70%; left: 10%; }
-        }
-
-        @keyframes move3 {
-            0%   { top: 50%; left: 10%; }
-            50%  { top: 10%; left: 70%; }
-            100% { top: 80%; left: 50%; }
-        }
-
-        @keyframes move4 {
-            0%   { top: 20%; left: 70%; }
-            50%  { top: 70%; left: 80%; }
-            100% { top: 10%; left: 20%; }
-        }
-
-        /* 7. Bouton Recommencer */
-        button {
-            background-color: #3498db;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            font-size: 1rem;
-            font-weight: bold;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background 0.2s, transform 0.1s;
-        }
-
-        button:hover {
-            background-color: #2980b9;
-        }
-
-        button:active {
-            transform: scale(0.95);
-        }
-    </style>
+    <title>🎯 Sniper Arena</title>
+    <!-- Liaison avec le fichier CSS externe -->
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <h1 id="game-title">Mini-Game Sniper</h1>
-    <p class="instructions">Cliquez sur un maximum de cibles en 5 secondes !</p>
+    <h1 id="game-title">🎯 Sniper Arena</h1>
+    <p class="instructions">Éliminez un maximum de cibles mouvantes !</p>
     
-    <div class="score-display">Your Score :</div>
+    <!-- Score interactif du haut -->
+    <div class="score-display">Score :</div>
 
-    <!-- Barre de chargement du minuteur -->
+    <!-- Barre de temps -->
     <div class="timer-container">
         <div class="timer-bar"></div>
     </div>
 
+    <!-- Zone d'action -->
     <div class="game-area">
-        <!-- Écran Game Over caché, s'affiche automatiquement après 5s -->
+        
+        <!-- Écran Game Over -->
         <div class="game-over-screen">
-            <h2>Game Over</h2>
-            <p>Le temps est écoulé !</p>
+            <h2>Temps Écoulé !</h2>
+            <p>Fin de la session de tir.</p>
+            <div class="final-score-box">Score Final :</div>
+            <button onclick="location.reload()">🔄 Recommencer</button>
         </div>
 
-        <!-- Chaque checkbox est une cible autonome -->
+        <!-- Les Checkboxes (Cibles réactives) -->
         <input type="checkbox" class="target-1">
         <input type="checkbox" class="target-2">
         <input type="checkbox" class="target-3">
         <input type="checkbox" class="target-4">
     </div>
 
-    <p class="restart-container"><button onclick="location.reload()">Start / Restart</button></p>
+    <!-- Bouton Reset sous l'arène -->
+    <div class="restart-container">
+        <button onclick="location.reload()">Forcer le Reset</button>
+    </div>
 
 </body>
 </html>
